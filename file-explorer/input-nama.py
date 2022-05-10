@@ -3,12 +3,16 @@ from tkinter import messagebox as mB
 
 def _onSubmitted():
     _name   =   _inputNamaLengkap.get()
-    _showInfo   =   mB.showinfo(title='Hello', message='Hello '+_name+'!')
-    _topLevel   =   Toplevel()
+    _topLevel       =   Toplevel()
+    _topLevel.title('Greeting')
+
+    _greetingLabel  =   Label(text='Hello, '+_name, master=_topLevel)
+    _greetingLabel.pack()
+
     _topLevel.mainloop()
 
 #semua function yang berasal dari TKinter harus didefinisikan setelah adanya inisialisasi objek Tk()
-_root   =   Tk()
+_root   =   Tk(screenName='Index')
 _icon   =   PhotoImage(file='../assets/icon/laukpauk-icon.png')
 
 _root.title('Perkenalan Diri')

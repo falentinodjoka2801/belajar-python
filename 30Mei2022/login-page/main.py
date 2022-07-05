@@ -17,7 +17,7 @@ class LoginApp(MDApp):
         self.theme_cls.primary_palette  =   'Indigo'
         self.theme_cls.accent_palette   =   'Blue'
         
-        _loginForm  =   './views/login-form.kv'
+        _loginForm  =   './views/welcome.kv'
         return Builder.load_file(_loginForm)
 
     def login(self):

@@ -24,4 +24,4 @@ try:
 except KeyboardInterrupt:
     print('Application was ended by user!')
 except SMTPAuthenticationError:
-    print('Username or Password you entered doesn\'t match!')
+    print('Authentication Failed! Username and password doesn\'t mactch!')

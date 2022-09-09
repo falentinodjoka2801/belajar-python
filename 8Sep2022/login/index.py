@@ -20,42 +20,34 @@ _root.title('Login System')
 _root.config(bg='#fff')
 _root.geometry(f'{_rootScreenWidth}x{_rootScreenHeight}+{_xPosition}+{_yPosition}')
 
-_loginImage         =   PhotoImage(file='8Sep2022/login/img/login.png')
-_loginImageLabel    =   Label(_root, image=_loginImage, bg='#fff')
-_loginImageLabel.place(x=50, y=50)
-
 _formFrameWidth     =   ceil(_rootScreenWidth / 2)
 
+_loginImage         =   PhotoImage(file='8Sep2022/login/img/login.png')
+_loginImageLabel    =   Label(_root, image=_loginImage, bg='#fff', width=_formFrameWidth)
+_loginImageLabel.grid(row=0, column=0)
+
 _formFrame  =   Frame(_root, width=_formFrameWidth, height=_rootScreenHeight, bg='#fff')
-_formFrame.place(x=_formFrameWidth)
+_formFrame.grid(row=0, column=1)
+
+_formContainerFrame =   Frame(_formFrame, width=_formFrameWidth, height=ceil(_rootScreenHeight/2), bg='#fff')
+_formContainerFrame.place(anchor=CENTER, relx=.5, rely=.5)
 
 _entryWidth     =   _formFrame.winfo_reqwidth()
 
-_uLabel     =   Label(_formFrame, text='Username')
-_uLabel.grid(row=0, column=0, sticky='w')
-_uEntry     =   Entry(_formFrame, width=_entryWidth)
-_uEntry.grid(row=0, column=1)
+_headingLabel   =   Label(_formContainerFrame, text='Sign In', fg='#66cc99', bg='#fff', font=('Microsoft YaHei UI Light', 25, 'bold'))
+_headingLabel.place(anchor=CENTER, relx=.5, rely=.15)
 
-_pLabel     =   Label(_formFrame, text='Password')
-_pLabel.grid(row=1, column=0, sticky='w')
-_pEntry     =   Entry(_formFrame, width=_entryWidth)
-_pEntry.grid(row=1, column=1)
+_usernameEntry  =   Entry(_formContainerFrame, border=0, bg='#fff')
+_usernameEntry.insert(0, 'Username')
+_usernameEntry.place(anchor=NE, relx=1.0, rely=.30, relwidth=1.0)
+Frame(_formContainerFrame, width=_formFrameWidth, height=2, bg='#000').place(anchor=NE, relx=1.0, rely=0.415)
 
-# _headingLabel   =   Label(_formFrame, text='Sign In', fg='#66cc99', bg='#fff', font=('Microsoft YaHei UI Light', 25, 'bold'))
-# _headingLabel.place(x=ceil(_formFrame.winfo_reqwidth()/2 - _headingLabel.winfo_reqwidth()/2), y=50)
+_passwordEntry  =   Entry(_formContainerFrame, border=0, bg='#fff')
+_passwordEntry.insert(0, 'Password')
+_passwordEntry.place(anchor=NE, relx=1.0, rely=0.525, relwidth=1.0)
+Frame(_formContainerFrame, width=_formFrameWidth, height=2, bg='#000').place(anchor=NE, relx=1.0, rely=0.635)
 
-
-# _usernameEntry  =   Entry(_formFrame, border=0, bg='#fff', width=_entryWidth)
-# _usernameEntry.place(y=125)
-# _usernameEntry.insert(0, 'Username')
-# Frame(_formFrame, width=_formFrameWidth, height=2, bg='#000').place(y=150)
-
-# _passwordEntry  =   Entry(_formFrame, border=0, bg='#fff', width=_entryWidth)
-# _passwordEntry.place(y=185)
-# _passwordEntry.insert(0, 'Password')
-# Frame(_formFrame, width=_formFrameWidth, height=2, bg='#000').place(y=215)
-
-# _buttonSubmit   =   Button(_formFrame, text='Sign In', bg='#66cc99', height=2, border=0, padx=25, fg='#fff', command=_showLoginForm)
-# _buttonSubmit.place(x=ceil(_formFrame.winfo_reqwidth()/2 - _buttonSubmit.winfo_reqwidth()/2), y=250)
+_buttonSubmit   =   Button(_formContainerFrame, text='Sign In', fg='#fff', bg='#66cc99', height=2, border=0)
+_buttonSubmit.place(anchor=NW, rely=.75, relx=0, relwidth=1.0)
 
 _root.mainloop()

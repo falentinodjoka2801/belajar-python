@@ -1,12 +1,75 @@
+from ctypes import sizeof
 from math import ceil
 from tkinter import *
 from tkinter import messagebox
-from typing import Container
+from requests import post, get
 
 _root   =   Tk()
 
-# def _showLoginForm():
-#     print('Hello')
+_username   =   'username'
+_password   =   'password'
+
+_defaultUsernameValue   =   'Username'
+_defaultPasswordValue   =   'Password'
+
+def _onEnter(event:Event):
+    _widget     =   event.widget
+    _widgetName =   _widget.winfo_name()
+
+    _defaultValue   =   '';
+    if(_widgetName == _username):
+        _defaultValue   =   _defaultUsernameValue
+    
+    if(_widgetName == _password):
+        _defaultValue   =   _defaultPasswordValue
+
+    if(_widget.get() == _defaultValue):
+        _widget.delete(0, 'end')
+
+def _onLeave(event:Event):
+    _widget     =   event.widget
+    _widgetName =   _widget.winfo_name()
+
+    _defaultValue   =   ''
+    if(_widgetName == _username):
+        _defaultValue   =   _defaultUsernameValue
+    
+    if(_widgetName == _password):
+        _defaultValue   =   _defaultPasswordValue
+
+    if(len(_widget.get()) <= 0):
+        _widget.insert(0, _defaultValue)
+
+def _onSubmit():
+    _usernameVal   =   _usernameEntry.get()
+    _passwordVal   =   _passwordEntry.get()
+
+    _url        =   'https://api.pancabudi.ac.id/api/autentikasi/sahabat-unpab'
+    _formData   =   {'username':_usernameVal, 'password':_passwordVal}
+    _login      =   post(_url, data=_formData)
+
+    _response   =   _login.json()
+    _status     =   _response['status']
+    _message    =   _response['message']
+    _data       =   _response['data']
+
+    if(_status):
+        _successScreen  =   Toplevel(_root)
+        _successScreen.title('Login Success')
+        # _successScreen.geometry(f'300x150+{_xPosition}+{_yPosition}')
+
+        _data_name      =   _data['name']
+        _data_username  =   _data['username']
+
+        _text   =   f'Welcome back, {_data_name} ({_data_username})!'
+
+        Label(_successScreen, text='Sign In Success!').pack(side=TOP)
+        Label(_successScreen, text=_text).pack(side=TOP)
+
+        
+        _successScreen.mainloop()
+    else:
+        messagebox.showinfo(title='Login Gagal', message=_message)
 
 _screenWidth    =   _root.winfo_screenwidth()
 _screenHeight   =   _root.winfo_screenheight()
@@ -33,23 +96,29 @@ _loginImageLabel.pack(side=LEFT)
 _formFrame  =   Frame(_container, width=_formFrameWidth, height=_rootScreenHeight, bg='#fff')
 _formFrame.pack(side=LEFT)
 
-_formContainerFrame =   Frame(_formFrame, width=_formFrameWidth-50, height=ceil(_rootScreenHeight/1.5), bg='#fff')
+_formContainerFrame =   Frame(_formFrame, width=_formFrameWidth-75.0, height=ceil(_rootScreenHeight/1.5), bg='#fff')
 _formContainerFrame.place(anchor=CENTER, relx=.5, rely=.5)
 
 _headingLabel   =   Label(_formContainerFrame, text='Sign In', fg='#66cc99', bg='#fff', font=('Microsoft YaHei UI Light', 25, 'bold'))
 _headingLabel.place(anchor=CENTER, relx=.5, rely=.15)
 
-_usernameEntry  =   Entry(_formContainerFrame, border=0, bg='#fff')
-_usernameEntry.insert(0, 'Username')
+_usernameEntry  =   Entry(_formContainerFrame, border=0, bg='#fff', name=_username)
+_usernameEntry.insert(0, _defaultUsernameValue)
 _usernameEntry.place(anchor=NW, rely=.30, relwidth=1.0)
+_usernameEntry.bind('<FocusIn>', _onEnter)
+_usernameEntry.bind('<FocusOut>', _onLeave)
 Frame(_formContainerFrame, width=_formFrameWidth, height=2, bg='#000').place(anchor=NW, rely=0.4)
 
-_passwordEntry  =   Entry(_formContainerFrame, border=0, bg='#fff')
+_passwordEntry  =   Entry(_formContainerFrame, border=0, bg='#fff', name=_password, show='*')
 _passwordEntry.insert(0, 'Password')
 _passwordEntry.place(anchor=NW, rely=0.525, relwidth=1.0)
+_passwordEntry.bind('<FocusIn>', _onEnter)
+_passwordEntry.bind('<FocusOut>', _onLeave)
 Frame(_formContainerFrame, width=_formFrameWidth, height=2, bg='#000').place(anchor=NW, rely=0.625)
 
-_buttonSubmit   =   Button(_formContainerFrame, text='Sign In', fg='#fff', bg='#66cc99', height=2, border=0)
+_buttonSubmit   =   Button(_formContainerFrame, text='Sign In', fg='#fff', bg='#66cc99', height=2, border=0, command=_onSubmit)
 _buttonSubmit.place(anchor=NW, rely=.75, relwidth=1.0)
+
+Label(_formContainerFrame, text='Don\'t have an account?', bg='#fff').place(anchor=CENTER, relx=.5, rely=.975)
 
 _root.mainloop()

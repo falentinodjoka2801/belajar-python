@@ -2,7 +2,11 @@ from tkinter import *
 from tkinter import messagebox
 from math import ceil
 
-#{
+
+#{:
+
+def signIn(event):
+    pass
 
 windowWidth     =   925
 windowHeight    =   500
@@ -45,5 +49,13 @@ Frame(formContainer, height=2, bg='#000').place(relwidth=1.0, anchor=NW, rely=.7
 
 buttonSubmit    =   Button(formContainer, bg='#66cc99', border=0, fg='#fff', text='Sign Up')
 buttonSubmit.place(anchor=NW, relwidth=1.0, relheight=.12, rely=.8)
+
+moreOptionsFrame =   Frame(formContainer, height=10, bg='#fff')
+moreOptionsFrame.place(anchor=NW, relwidth=1.0, rely=.95)
+
+Label(moreOptionsFrame, text='Already have an account? Sign In', fg='#000', bg='#fff').pack(side=LEFT)
+link    =   Label(moreOptionsFrame, text='Here', fg='#66cc99', bg='#fff')
+link.pack(side=LEFT)
+link.bind('<Button-1>', signIn)
 
 window.mainloop()

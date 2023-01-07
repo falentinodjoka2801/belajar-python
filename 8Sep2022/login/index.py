@@ -54,19 +54,42 @@ def _onSubmit():
     _data       =   _response['data']
 
     if(_status):
+        _token  =   _data['token']
+
+        _urlListSahabatUNPAB        =   f'https://api.pancabudi.ac.id/api/sahabat-unpab?status=1&kelamin=L'
+        _headers                    =   {'Authorization':f'Bearer {_token}'}
+        _listSahabatUNPABRequest    =   get(_urlListSahabatUNPAB, headers=_headers)
+
+        _response           =   _listSahabatUNPABRequest.json()
+        _listSahabatUNPAB   =   _response['data']
+
         _successScreen  =   Toplevel(_root)
         _successScreen.title('Login Success')
-        # _successScreen.geometry(f'300x150+{_xPosition}+{_yPosition}')
+        _successScreen.geometry(f'300x150+{_xPosition}+{_yPosition}')
 
-        _data_name      =   _data['name']
-        _data_username  =   _data['username']
-
-        _text   =   f'Welcome back, {_data_name} ({_data_username})!'
-
-        Label(_successScreen, text='Sign In Success!').pack(side=TOP)
-        Label(_successScreen, text=_text).pack(side=TOP)
-
+        _hScrollbar     =   Scrollbar(_successScreen, orient=HORIZONTAL)
+        _vScrollbar     =   Scrollbar(_successScreen, orient=VERTICAL)
         
+        _nomorUrutHeaderLabel       =   Label(_successScreen, text='No')
+        _nomorUrutHeaderLabel.grid(row=0, column=0, sticky=E)
+
+        _namaHeaderLabel            =   Label(_successScreen, text='Nama Pembawa')
+        _namaHeaderLabel.grid(row=0, column=1, sticky=W)
+
+        _nomorPembawaHeaderLabel    =   Label(_successScreen, text='Nomor Pembawa')
+        _nomorPembawaHeaderLabel.grid(row=0, column=2, sticky=E)
+
+        _numRows    =   len(_listSahabatUNPAB)
+        for _rowIndex in range(_numRows):
+            _nomorUrutLabel     =   Label(_successScreen, text=(_rowIndex + 1))
+            _nomorUrutLabel.grid(row=(_rowIndex + 1), column=0, sticky=E)
+
+            _namaLabel  =   Label(_successScreen, text=_listSahabatUNPAB[_rowIndex]['pembNama'])
+            _namaLabel.grid(row=(_rowIndex + 1), column=1, sticky=W)
+
+            _nomorPembawaLabel  =   Label(_successScreen, text=_listSahabatUNPAB[_rowIndex]['pembNomor'])
+            _nomorPembawaLabel.grid(row=(_rowIndex + 1), column=2, sticky=E)
+
         _successScreen.mainloop()
     else:
         messagebox.showinfo(title='Login Gagal', message=_message)

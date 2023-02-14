@@ -26,3 +26,6 @@ for cls in [B, C, D]:
         print('C')
     except B:
         print('B')
+
+#14 Februari 2023 20:33 WIB
+#Intinya, jika suatu kelas *mewarisi* suatu kelas, katakan B mewarisi A, maka exception kelas B adalah exception dari kelas induknya juga, yaitu kelas A.
